@@ -126,6 +126,9 @@ try {
 } catch (error) {
 	console.error(chalk.red('\n🛑 BUILD PROCESS FAILED!'));
 	console.error(chalk.red('An error occurred during the build process:'));
+	if (error?.message) console.error(chalk.red(error.message));
+	if (error?.stderr) console.error(chalk.red(error.stderr.toString?.() || error.stderr));
+	if (error?.stdout) console.error(error.stdout.toString?.() || error.stdout);
 	process.exit(1);
 }
 

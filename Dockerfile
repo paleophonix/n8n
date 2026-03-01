@@ -25,7 +25,7 @@ ENV NODE_ENV=production
 ENV CI=true
 RUN corepack enable && corepack prepare pnpm@10.22.0 --activate && \
     pnpm install --frozen-lockfile && \
-    pnpm build --filter=@n8n/playwright-janitor && \
+    (cd packages/testing/janitor && pnpm run build) && \
     N8N_SKIP_LICENSES=true node scripts/build-n8n.mjs
 
 # -----------------------------------------------------------------------------
