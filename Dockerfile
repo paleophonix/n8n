@@ -20,11 +20,12 @@ RUN corepack enable && corepack prepare pnpm@10.22.0 --activate
 # Copy full repo (build-n8n.mjs runs install, build, trim, deploy)
 COPY . .
 
-# Single command: install, build, deploy to ./compiled (see scripts/build-n8n.mjs)
+# Install deps, build janitor so its bin (dist/cli.js) exists before build-n8n.mjs, then run full build
 ENV NODE_ENV=production
 ENV CI=true
 RUN corepack enable && corepack prepare pnpm@10.22.0 --activate && \
     pnpm install --frozen-lockfile && \
+    pnpm build --filter=@n8n/playwright-janitor && \
     N8N_SKIP_LICENSES=true node scripts/build-n8n.mjs
 
 # -----------------------------------------------------------------------------
