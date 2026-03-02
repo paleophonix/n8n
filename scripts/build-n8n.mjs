@@ -18,6 +18,11 @@ const isCI = process.env.CI === 'true';
 const excludeTestController =
 	process.env.CI === 'true' && process.env.INCLUDE_TEST_CONTROLLER !== 'true';
 
+// Alpine (Docker) uses sh/ash; zx may not auto-detect quote — set POSIX quote to avoid "No quote function is defined"
+if (typeof $.quote !== 'function') {
+	$.quote = (arg) => "'" + String(arg).replace(/'/g, "'\"'\"'") + "'";
+}
+
 // Disable verbose output and force color only if not in CI
 $.verbose = !isCI;
 process.env.FORCE_COLOR = isCI ? '0' : '1';
